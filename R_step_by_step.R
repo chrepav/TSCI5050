@@ -73,15 +73,27 @@ foo <- log(foo)
 bar <- 5*5; bar;
 bar <- exp(bar)
 whatisthis(foo);
+log(((3^2)*(2+3)/4)-1)
+print(foo <- 42)
+
 #' Character strings. Create these by wrapping single (`'`) or double (`"`)
 #' quotes around the value.
 
-#+ assignment_string
-
+#+ assignment_string # name variables or levels
+"Do Not Panic"
+'Do Not Panic'
+"Don't Panic"
+'The "Heart of Gold" comes equipped with heated leather seats and an infinite improbability drive'
+'42'
 #' Logical values are `TRUE` or `FALSE`. Can also be created using `>`, `<`,
 #' `==`, `!=`, `>=`, `<=`
 
-#+ assignment_logical
+#+ assignment_logical # for data wrangling e.g. if treatment success (0,1)
+#if variable >0== "successful"
+5<4
+5==4
+5!=5
+5<=6
 
 #' Missing values are represented by `NA` (no quotes for any of these). Null
 #' values are _not_ the same as missing and they are represented by `NULL`. In
@@ -91,7 +103,12 @@ whatisthis(foo);
 #' Dates and times. Can be created with the `Sys.Date()` or `Sys.time()`
 #' functions or converted from a character string using `as.Date()`.
 
-#+ assignment_datetime
+#+ assignment_datetime # use for time variables depending on date e.g calculate follow-up time starting on date x
+Sys.Date()
+Sys.time()
+?as.Date
+dates <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
+as.Date(dates, "%m/%d/%y")
 
 #' Factors are basically integers that have labels. They are a human-readable
 #' alternative to using integer codes for discrete data. These will make more
