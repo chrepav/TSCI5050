@@ -88,7 +88,8 @@ print(foo <- 42)
 #' Logical values are `TRUE` or `FALSE`. Can also be created using `>`, `<`,
 #' `==`, `!=`, `>=`, `<=`
 
-#+ assignment_logical # for data wrangling e.g. if treatment success (0,1)
+#+ assignment_logical 
+## for data wrangling e.g. if treatment success (0,1) 
 #if variable >0== "successful"
 5<4
 5==4
@@ -103,13 +104,16 @@ print(foo <- 42)
 #' Dates and times. Can be created with the `Sys.Date()` or `Sys.time()`
 #' functions or converted from a character string using `as.Date()`.
 
-#+ assignment_datetime # use for time variables depending on date e.g calculate follow-up time starting on date x
+#+ assignment_datetime # use for time variables depending on date 
+#+e.g calculate follow-up time starting on date x
 Sys.Date()
 Sys.time()
 ?as.Date
 dates <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
 as.Date(dates, "%m/%d/%y")
-
+schedule <- as.Date(dates, "%m/%d/%y")
+as.Date(schedule)
+as.Date(schedule, "%m/%d/%y") #with comma separate arguments in the same command
 #' Factors are basically integers that have labels. They are a human-readable
 #' alternative to using integer codes for discrete data. These will make more
 #' sense after we talk about vectors in the next section.
@@ -129,20 +133,22 @@ as.Date(dates, "%m/%d/%y")
 #' command with any number of arguments. All items in a vector have to be the
 #' same type.
 
-#+ vectors_c
-
+#+ vectors_c  
+#'function is the command before the (), argument is in ()
+foo <- c(100,500, 4, 10)
+foofoo <- c(5,11,14,20)
 #' Since the default data structure in R is a `vector`, if you
 #' create some sort of simple value you are creating a `vector` even if you are
 #' not using `c()`... it just happens to be a `vector` of length 1. These
 #' are identical, and both return `1` when used with the `length()` function.
 
 #+ vectors_length1
-
+length(foo)
 #' If you want to create a sequence of consecutive integers, you can use the `:`
 #' operator.
 
 #+ vectors_sequence
-
+25:100
 #' In most other languages, you need to use a `for` loop in order to perform
 #' some sort of change to a series of values. In R, you often don't have to
 #' when you are working with vectors because a lot of functions (including all
@@ -150,23 +156,33 @@ as.Date(dates, "%m/%d/%y")
 #' work. If the function involves multiple vectors (e.g. `+`), usually you'll
 #' want all of them to be either the same length or length 1.
 
-#+ vectors_operators
-
+#+ vectors_operators; #these work will all arithmetic operators
+foo+6
+foo+foofoo
+foo/foofoo
+foo>=100
+foofoo<=10
 #' You can assign names to some or all members of a vector when you create it.
 #' You can also assign or re-assign names later using the `names()` function.
 
 #+ vectors_names1
-
+age <- c(a="young", b="mid", c="old")
+print(age <- c(a="young", b="mid", c="old"))
+age["b"]
+age[c("b", "c")]
 #' You can also use it to see the currently assigned names.
 
 #+ vectors_names2
-
+names(age)
+names(age) <- c("kids", "adolescents", "adults") #rename elements of the vector
+names(age)[3] <-"old peeps" #rename only one element
+age
 #' You can subset a vector by using `[...]` with the `...` replaced by _another_
 #' vector, of integers indicating which positions you want to extract. Or you
 #' could use a vector of names.
 
 #+ vectors_subset1
-
+foo[100]
 #' If you just need a single value, use a single name or number.
 
 #+ vectors_subset2
@@ -176,18 +192,32 @@ as.Date(dates, "%m/%d/%y")
 #' expressions separated by commas `,`.
 
 #+ vectors_subset3
-
+foo[c(1,2,3)]
+foo[1:3]
+foo[c(1:2,3:4)]
 #' Other useful functions for exploring vectors: `length()`, `summary()`,
 #' `table()`, `head()`, `tail()`, `sum()`, `diff()`, `seq_along()`.
 
 #+ vectors_explore
-
+summary(foo) #summary stats for numeric vector
+summary(age)
+table(age) #frequency table
+bat <- sample(1:10, 30, replace = TRUE)*1000
+table(bat)
+bat
+head(bat) #first 6 elements of vector
+tail(bat) #last 6 elements of vector
+diff(bat) #dif between two consecutive values
+sum(bat) #sum of all values
+seq_along(bat) # generate ID numbers unique for each element
+sum(bat,na.rm = TRUE) # to not account missing values
 #' Here are some aggregation functions. For these, make sure to use `na.rm=T` if
 #' your vector has `NA`s in it... `max()`, `min()`, `mean()`, `median()`,
 #' `quantile()`.
 
 #+ vectors_aggregate
-
+quantile(bat)
+quantile(bat,na.rm = TRUE)
 #' ### Data Frames
 #'
 #' You can bundle several vectors of the same length together into a
