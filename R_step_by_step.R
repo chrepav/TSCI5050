@@ -26,6 +26,7 @@ library(GGally);
 library(rio); # simple command for importing and exporting data
 library(pander); # formats tables
 library(printr); 
+library(broom) #summarize data in standardized matter
 options(max.print=42); # sets the limit no how many lines of results are printed on console
 panderOptions('table.split.table',Inf); panderOptions('table.split.cells',Inf);
 whatisthis <- function(xx){
@@ -233,6 +234,27 @@ quantile(bat,na.rm = TRUE)
 
 #+ df_explore
 
+#' linear Model
+#+ linear_models 
+library(broom) #summarize data in standardized matter
+head(mtcars) #to view mtcars dataset
+lm(Y~X1+X2+X3, DATA) #linear model,y is the outcome and X1,2,3 are predictors
+performance <- lm(mpg~hp+wt+vs, mtcars) # saving data to an object
+summary(performance)
+summary(performance)$coefficient
+ # print() or summary() to summarize data
+tidy(performance)$p.value #when you want just one column of the data
+tidy(performance)[-1,c("estimate", "p.value")] #when you want to remove one row
+#of data, same as slice command below
+lm(mpg~hp+wt+vs, mtcars) %>%tidy() %>% select(c("estimate", "p.value"))
+performance %>%tidy() %>% select(c("estimate", "p.value")) #when you want to
+#select certain columns of data
+performance %>%tidy() %>% select(c("estimate", "p.value")) %>% slice(-1) #slice
+#when you want to remove 1st row of data
+whatisthis(performance)
 
+#+ multiple comparison
 
-
+performance %>%tidy() %>% select(c("p.value")) %>% slice(-1)
+performance %>%tidy() %>% select(c("p.value")) %>% slice(-1) %>% unlist %>% 
+  p.adjust() #to adjust p-values
