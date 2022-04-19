@@ -238,7 +238,7 @@ quantile(bat,na.rm = TRUE)
 #+ linear_models 
 library(broom) #summarize data in standardized matter
 head(mtcars) #to view mtcars dataset
-lm(Y~X1+X2+X3, DATA) #linear model,y is the outcome and X1,2,3 are predictors
+#' lm(Y~X1+X2+X3, DATA) #linear model,y is the outcome and X1,2,3 are predictors
 performance <- lm(mpg~hp+wt+vs, mtcars) # saving data to an object
 summary(performance)
 summary(performance)$coefficient
@@ -258,3 +258,48 @@ whatisthis(performance)
 performance %>%tidy() %>% select(c("p.value")) %>% slice(-1)
 performance %>%tidy() %>% select(c("p.value")) %>% slice(-1) %>% unlist %>% 
   p.adjust() #to adjust p-values
+#importing files into R
+dtset <- list.files("/Users/vanessachrepa/Desktop/R example/",full.names = TRUE) %>% 
+  sapply(import) %>% setNames(.,basename(names(.))) # to change the base names
+# to view one file you type dtset$ and then the name
+
+#importing one file
+birthweight <- import("/Users/vanessachrepa/Desktop/R example/Birthweight.sav")
+#' ## Introduction to dplyr (provides function mutate and function summarize)
+#' 
+#+ mutate(birthweight) # to create or change an entire column
+mutate(birthweight)
+mutate(birthweight,AGE*12) %>% View() #view command pops up the table to view
+mutate(birthweight,AGE_months=AGE*12) %>% head #head to print a short version
+# of the table, what you see in the control
+mutate(birthweight,AGE_months=AGE*12, AGE_days= AGE_months*30.4) %>% head()
+table(birthweight$RACE) #extract variables from one column,
+# assign values to Race
+with(birthweight, case_when(RACE== 1~ "White", RACE== 2 ~ "Hispanic", 
+                            RACE== 3 ~ "Black", TRUE ~ as.character(RACE)))
+mutate(birthweight,AGE_months=AGE*12, AGE_days= AGE_months*30.4
+       ,Race_label=case_when(RACE== 1~ "White", RACE== 2 ~ "Hispanic", 
+                  RACE== 3 ~ "Black", TRUE ~ as.character(RACE)))
+summary(birthweight$BWT)
+
+#' summary function
+#' 
+
+summary(birthweight$BWT)
+summarise(birthweight, age=median(AGE))
+summarise(birthweight, age= median(AGE), height= median(HT), meanage= mean(AGE))
+table(birthweight$SMOKE)
+group_by(birthweight, SMOKE) # to summarize data per variables
+
+#' group ans get summary statistics
+group_by(birthweight, SMOKE)%>% summarize(birthweight, age= median(AGE), 
+                                          height=median(HT), meanage= mean(AGE))
+group_by(birthweight, SMOKE)%>% summarize(across(where(is.numeric), mean))
+group_by(birthweight, SMOKE)%>% summarize(across(where(is.numeric), mean,
+                                                 .names = '{.col}_mean') ,
+                                          across(where(is.numeric), 
+                                                 sd, .names = '{.col}_sd'))
+                                          
+                                        
+
+                                          
